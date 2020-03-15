@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Task, TaskStatus } from './task.model';
 import * as uuid from 'uuid/v1';
 import { stringify } from 'querystring';
+import { CreateTaskDto } from './dto/create-task.dto';
 
 @Controller('tasks')
 export class TasksController {
@@ -13,21 +14,38 @@ getAllTask(): Task[]{
     return this.taskService.getAllTask();
 }
 
+@Get('/:id')
+getTaskById(@Param('id') id:string):Task{
+
+    return this.taskService.getTaskById(id);
+
+
+}
+
+@Delete('/id')
+deleteTask(@Param('id') id:string):void{
+
+    this.taskService.deleteTask(id);
+
+
+}
+
+@Get('/:id')
+getTaskDelete(@Param('id') id:string): Task{
+    return this.taskService.getTaskDelete(id);
+
+}
+
+
 
 @Post()
-createTask(
-    @Body('title') title:string,
-    @Body('description') description:string,
-    )
-    {
+createTask(@Body() createTaskDto:CreateTaskDto):Task{
 
 
 
 
-        console.log('title'+title);
-        console.log('description'+description);
 
-      return  this.taskService.createTask(title,description);
+      return  this.taskService.createTask(createTaskDto);
 
 }
 
